@@ -37,9 +37,10 @@ This design effectively maintains a rolling 24-hour volume window, even across p
 
 In summary, this algorithm efficiently tracks and updates trading volumes for various pairs on an hourly basis over a rolling 24-hour period.
 
-How to add:
-    // Place this line in the _swap function https://github.com/sonicdex/sonic-v1/blob/c5caf4b0adff117d6fcce01ed1f680b8026a2033/sonic-v1/swap/src/swap.mo#L2080C14-L2080C14
-    // Note: It should only add the amount in one of the two tokens (always the first one according to configuration) to the volume
+## How to add:
+
+Place this line in the _swap function https://github.com/sonicdex/sonic-v1/blob/c5caf4b0adff117d6fcce01ed1f680b8026a2033/sonic-v1/swap/src/swap.mo#L2080C14-L2080C14
+Note: It should only add the amount in one of the two tokens (always the first one according to configuration) to the volume
 ```
 updateVolume(pairid, Time.now(), volume)
 ```
