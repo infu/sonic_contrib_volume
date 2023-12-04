@@ -26,7 +26,6 @@ actor {
         
         let hours_passed = (t - prev.lastMove)/(60*60*1000000000);
         
-        assert(hours_passed >= 0);
         if (hours_passed < 0) return; // There is an error, but we don't want to stop the swap from going through
         
         // shift window data based on hours passed
