@@ -45,3 +45,11 @@ updateVolume(pairid, Time.now(), volume)
 ```
 
 the rest of the code can be copy pasted and should work fine. Don't include the testUpdateVolume function
+
+
+## Tests
+
+Tests are in test.blast You will need Internet Base VScode extension to open them.
+![image](https://github.com/infu/sonic_contrib_volume/assets/24810/e8087604-46be-4a7b-b50d-a3ac130af074)
+![image](https://github.com/infu/sonic_contrib_volume/assets/24810/19773f72-9ce5-42c5-b658-f58a19686003)
+
