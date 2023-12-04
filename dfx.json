@@ -1,0 +1,14 @@
+{
+    "canisters": {
+      "test": {
+        "main": "src/main.mo"
+      }
+    },
+    "defaults": {
+      "build": {
+        "packtool": ""
+      }
+    },
+ 
+    "version": 1
+  }
