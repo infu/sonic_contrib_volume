@@ -1,14 +1,13 @@
 {
-    "canisters": {
-      "test": {
-        "main": "src/main.mo"
-      }
-    },
-    "defaults": {
-      "build": {
-        "packtool": ""
-      }
-    },
- 
-    "version": 1
-  }
+  "canisters": {
+    "sonicvolume": {
+      "main": "src/main.mo"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": "mops sources"
+    }
+  },
+  "version": 1
+}
