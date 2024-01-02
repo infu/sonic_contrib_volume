@@ -31,7 +31,7 @@ actor {
     let history = actor ("vemis-oyaaa-aaaah-adpkq-cai") : Cap.Self;
 
     stable var digested : Nat = 0;
-    stable var curPage : Nat = 14175;
+    stable var curPage : Nat = 14350;
     stable var nextTxIdx : Nat = 0;
     stable var historyRequests : Nat = 0;
 
@@ -46,9 +46,13 @@ actor {
         if (tx.operation != "swap") return;
         digested := digested + 1;
         let ? #Text(pair_id) = find_val("pairId", tx.details) else Debug.trap("pairId not found");
-        // let ? #Text(amountInText) = find_val("amountIn", tx.details) else Debug.trap("amountIn not found " # debug_show (tx));
-        // let ?volume = Nat.fromText(amountInText) else Debug.trap("volume not a number");
-        let ?weirdVolume = find_val("amountIn", tx.details) else Debug.trap("amountIn not found " # debug_show (tx));
+
+        let ? #Text(from_id) = find_val("from", tx.details) else Debug.trap("from id not found");
+        let ? #Text(to_id) = find_val("to", tx.details) else Debug.trap("to id not found");
+
+        let lfprop = if ((from_id # ":" #to_id) == pair_id) "amountIn" else "amountOut";
+
+        let ?weirdVolume = find_val(lfprop, tx.details) else Debug.trap(lfprop # " not found " # debug_show (tx));
         let volume = switch (weirdVolume) {
             case (#Text(amountInText)) {
                 let ?tmp = Nat.fromText(amountInText) else Debug.trap("volume not a number");
@@ -57,7 +61,7 @@ actor {
             case (#U64(volU64)) {
                 Nat64.toNat(volU64);
             };
-            case (_) Debug.trap("amountIn unexpected type " # debug_show (tx));
+            case (_) Debug.trap(lfprop # " unexpected type " # debug_show (tx));
         };
         let time = Int64.toInt(Int64.fromNat64(tx.time));
         updateVolume(pair_id, time, volume);
@@ -156,7 +160,7 @@ actor {
 
     // New canister function. Returns key, total volume in last 24 hours, and total volume since start of tracking.
     public query func getPairVolumes() : async ([(Text, Volume, Volume)]) {
-        let t = Time.now();
+        let t = Time.now() / 1000000;
 
         Iter.toArray(
             Iter.map<(Text, VolumeWindow), (Text, Volume, Volume)>(
@@ -192,13 +196,6 @@ actor {
             historyRequests;
         };
     };
-
-    // Test function for development purposes only
-    // public func testUpdateVolume(items : [(key : Text, t : Time.Time, volume_to_add : Volume)]) : () {
-    //     for (item in items.vals()) {
-    //         updateVolume(item);
-    //     };
-    // };
 
     ignore Timer.setTimer(#seconds 1, check_for_new_tx_log);
 
